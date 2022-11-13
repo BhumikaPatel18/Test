@@ -1,0 +1,66 @@
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/bhumi', function () {
+    return '<h1>Intro to laravel</h1>';
+});
+
+Route::get('/me', function () {
+    $response_arr = [];
+    $response_arr['name'] = 'BHUMI';
+    $response_arr['Surname'] = 'PATEL'; 
+    return $response_arr;
+});
+
+Route::any('demo',function(){
+    return view('demo');
+});  //anyone choose from post and get method
+
+Route::get('demmo/{name}/{id?}',function($name,$id = null){
+    echo 'name of user'.$name." ";
+    echo $id;
+});  //data paas through url
+
+Route::get('demo/{name}/{id?}',function($name,$id = null){
+    $data = compact('name','id'); //compact() function convert variables into array
+    //print_r($data);
+    return view('demo')->with($data);
+});  //data paas through url ...//pass name and id in url(demo/bhumika/3)
+
+Route::match(['get', 'post'], '/match', function () {
+    return 'Hello World';
+}); //match method respond to multiple methods like any
+/*
+$url = url('bhumika');
+echo $url; //create url
+*/
+
+Route::get('user/{name}', function ($name) {
+    echo $name;
+})
+->where('name', '[A-Za-z]+');
+ 
+Route::get('user/{id}', function ($id) {
+    echo $id;
+})
+->where('id', '[0-9]+');
+ 
+Route::get('user/{id}/{name}', function ($id, $name) {
+    //
+})
+->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+
+//////////////////////////////////
+ demo.blade.php
+
+ <h1> laravel 8</h1>
+
+<h2>
+     {{ $name }}  
+</h2>
+
+<h2>
+    {{ $id }}
+</h2>

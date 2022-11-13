@@ -1,0 +1,124 @@
+/////// form.blade.php ////////
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style>
+.container{
+    width:50%;
+}
+    </style>
+
+</head>
+  <body>
+    <form action="{{url('/')}}/register" method="post">
+        @csrf
+
+      <div class="container">
+        <h1 class="text-center">Registration</h1>
+
+
+
+        <x-input type = "text" name = "name" label = "enter your name"/>
+        <x-input type = "email" name = "email" label = "enter your email" />
+        <x-input type = "pasword" name = "password" label = "enter your password" />
+        <x-input type = "password" name = "password_confirm" label = "enter your cofirm password" />
+
+        <div class="text-center">
+        <button class ="btn btn-primary">
+            Submit
+        </button>
+    </div>
+
+      </div>
+    </form>
+  </body>
+</html>
+
+
+/////// RegistrationController.php //////
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class RegistrationController extends Controller
+{
+    public function index(){
+        return view('form');
+    }
+
+    public function register(Request $request){
+
+        $request->validate(
+            [
+                'name' => 'required|string|alpha',
+                'email' => 'required|email',
+                'password' => 'required',
+                'password_confirm' => 'required|same:password'
+            ]);
+        echo "<pre>";
+        print_r($request->all());
+    }
+}
+
+///// input.blade.php //////  resource>view>component>
+
+<div class="form-group">
+    <label for="">{{$label}}</label>
+    <input type="{{$type}}" name="{{$name}}" id="" class="form-control" >
+  </div>
+
+
+////input.php ////  app>view>component>
+
+<?php
+
+namespace App\View\Components;
+
+use Illuminate\View\Component;
+
+class Input extends Component
+{
+    public $name;
+    public $type;
+    public $label;
+    /**
+     * Create a new component instance.
+     *
+     * @return void
+     */
+    public function __construct($name, $type, $label)
+    {
+        $this->name = $name;
+        $this->type = $type;
+        $this->label = $label;
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\Contracts\View\View|\Closure|string
+     */
+    public function render()
+    {
+        return view('components.input');
+    }
+}
+
+
+///// web.php /////
+
+// submitting form data in laravel
+Route::get('/register',[RegistrationController::class, 'index']);
+Route::post('/register',[RegistrationController::class, 'register']);

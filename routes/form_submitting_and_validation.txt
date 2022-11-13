@@ -1,0 +1,115 @@
+////// form.blade.php ///////
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style>
+.container{
+    width:50%;
+}
+    </style>
+
+</head>
+  <body>
+    <form action="{{url('/')}}/register" method="post">
+        @csrf
+
+      <div class="container">
+        <h1 class="text-center">Registration</h1>
+
+        <div class="form-group">
+          <label for="">Name</label>
+          <input type="text" name="name" id="name" class="form-control" placeholder="Full name here" value = "{{old('name')}}">
+          {{-- <small id="helpId" class="text-muted">Help text</small> --}}
+          <span class="text-danger">
+              @error('name')
+                    {{$message}}
+              @enderror
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="">Email</label>
+          <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email Here...." value = "{{old('email')}}">
+          {{-- <small id="emailHelpId" class="form-text text-muted">Help text</small> --}}
+          <span class="text-danger">
+            @error('email')
+                  {{$message}}
+            @enderror
+        </span>
+        </div>
+
+        <div class="form-group">
+          <label for="">Password</label>
+          <input type="password" class="form-control" name="password" id="password" placeholder="password">
+          <span class="text-danger">
+            @error('password')
+                  {{$message}}
+            @enderror
+        </span>
+        </div>
+
+        <div class="form-group">
+            <label for=""> Confirm Password</label>
+            <input type="password" class="form-control" name="password_confirm" id="password" placeholder="password">
+            <span class="text-danger">
+              @error('password_confirm')
+                    {{$message}}
+              @enderror
+          </span>
+          </div>
+
+        <div class="text-center">
+        <button class ="btn btn-primary">
+            Submit
+        </button>
+    </div>
+
+      </div>
+    </form>
+  </body>
+</html>
+
+
+////////  web.php   /////
+
+// submitting form data in laravel
+Route::get('/register',[RegistrationController::class, 'index']);
+Route::post('/register',[RegistrationController::class, 'register']);
+
+
+///////     RegistrationController.php  ////////
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class RegistrationController extends Controller
+{
+    public function index(){
+        return view('form');
+    }
+
+    public function register(Request $request){
+
+        $request->validate(
+            [
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+                'password_confirm' => 'required|same:password'
+            ]);
+        echo "<pre>";
+        print_r($request->all());
+    }
+}

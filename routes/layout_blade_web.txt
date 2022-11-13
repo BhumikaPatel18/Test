@@ -1,0 +1,74 @@
+//// web.php ///
+Route::get('/',function(){
+    return view('home');
+});
+
+Route::get('/about',function(){
+    return view('about');
+});
+
+Route::get('/course',function(){
+    return view('course');
+});
+
+//////main.blade.php /////
+@include('layouts.header')
+<div class="container">
+    @yield('main-section')
+</div>
+@include('layouts.footer')
+
+//// about.blade.php //////
+@extends('layouts.main')
+@push('title')
+<title>about</title>
+@endpush
+@section('main-section')
+<h1 class="text-center">
+    about  Page
+</h1>
+@endsection
+
+////// course.blade.php //////
+@extends('layouts.main')
+@push('title')
+<title>course</title>
+@endpush
+@section('main-section')
+<h1 class="text-center">
+    course Page
+</h1>
+@endsection
+
+////// home.blade.php ///////
+@extends('layouts.main')
+@push('title')
+<title>home</title>
+@endpush
+@section('main-section')
+<h1 class="text-center">
+    Home Page
+</h1>
+@endsection
+
+///////header.blade.php //////
+<!doctype html>
+<html lang="en">
+  <head>
+      @stack('title')
+    <!-- <title>laravel layout</title> -->
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+      
+    <h1 class="text-center">Welcome to laravel</h1>
+
+    ///// footer.blade.php /////
+    <h1 class="text-center">thank you for visiting us</h1>
+</body>
+</html>
